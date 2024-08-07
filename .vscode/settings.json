@@ -3,5 +3,5 @@
         "src"
     ],
     "java.project.outputPath": "out",
-    "java.project.exportJar.targetPath": "${workspaceFolder}/${workspaceFolderBasename}.jar"
+    "java.project.exportJar.targetPath": "${workspaceFolder}/lib/System.jar"
 }

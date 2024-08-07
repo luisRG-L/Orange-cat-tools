@@ -24,14 +24,12 @@ public class OdocToHtml {
     }
 
     private static String convertToHtml(String content) {
-        StringBuilder html = new StringBuilder();
-        html.append("<html><head><title>Document</title></head><body>");
-
         // Patterns for matching odoc syntax
-        Pattern header1Pattern = Pattern.compile("^#\\s+(.*)$", Pattern.MULTILINE);
-        Pattern header2Pattern = Pattern.compile("^\\$\\s+(.*)$", Pattern.MULTILINE);
+        Pattern titlePattern = Pattern.compile("^#\\s+(.*)$", Pattern.MULTILINE);
+        Pattern header1Pattern = Pattern.compile("^\\$\\s+(.*)$", Pattern.MULTILINE);
+        Pattern header2Pattern = Pattern.compile("^\\$\\$\\s+(.*)$", Pattern.MULTILINE);
         Pattern customHeaderPattern = Pattern.compile("^\\?\\$\\s+(.*)$", Pattern.MULTILINE);
-        Pattern ulItemPattern = Pattern.compile("^\\-\\s+(.*)$", Pattern.MULTILINE);
+        Pattern ulItemPattern = Pattern.compile("^-\\s+(.*)$", Pattern.MULTILINE);
         Pattern olItemPattern = Pattern.compile("^\\*\\s+(.*)$", Pattern.MULTILINE);
         Pattern termPattern = Pattern.compile("^\\[(.*?)\\]\\((.*?)\\)$", Pattern.MULTILINE);
         Pattern linkPattern = Pattern.compile("^\\[(.*?)\\]\\{(.*?)\\}$", Pattern.MULTILINE);
@@ -42,6 +40,7 @@ public class OdocToHtml {
         Pattern codeBlockPattern = Pattern.compile("\\\\python\\n(.*?)\\\\", Pattern.DOTALL);
 
         // Replace patterns with corresponding HTML
+        content = titlePattern.matcher(content).replaceAll("<title>$1</title>");
         content = header1Pattern.matcher(content).replaceAll("<h1>$1</h1>");
         content = header2Pattern.matcher(content).replaceAll("<h2>$1</h2>");
         content = customHeaderPattern.matcher(content).replaceAll("<h3 style='custom'>$1</h3>");
@@ -55,9 +54,19 @@ public class OdocToHtml {
         content = underlinedPattern.matcher(content).replaceAll("<u>$1</u>");
         content = codeBlockPattern.matcher(content).replaceAll("<pre><code>$1</code></pre>");
 
-        html.append(content);
-        html.append("</body></html>");
+        // Split content by lines and add \t and <br>
+        String[] lines = content.split("\n");
+        StringBuilder formattedHtml = new StringBuilder();
+        formattedHtml.append("<html>\n");
+        formattedHtml.append("<body>\n");
 
-        return html.toString();
+        for (String line : lines) {
+            formattedHtml.append("\t").append(line).append("<br>\n");
+        }
+
+        formattedHtml.append("</body>\n");
+        formattedHtml.append("</html>\n");
+
+        return formattedHtml.toString();
     }
 }

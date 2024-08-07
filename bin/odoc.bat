@@ -1,2 +1,2 @@
 @echo off
-java -jar "../odoc.jar" %*
+java -jar "%USERPROFILE%\Orange-cat-tools\lib\OdocToHtml.jar" %*
