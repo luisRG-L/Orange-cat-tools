@@ -1,0 +1,17 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\.ocat]
+@="Orange Cat Source"
+
+[HKEY_CLASSES_ROOT\OrangeCatFile]
+@="Orange Cat Source File"
+
+[HKEY_CLASSES_ROOT\OrangeCatFile\DefaultIcon]
+@="C:\\Users\\%USERNAME%\\Orange-cat-tools\\resources\\icons\\OC.ico,0"
+
+[HKEY_CLASSES_ROOT\OrangeCatFile\shell]
+
+[HKEY_CLASSES_ROOT\OrangeCatFile\shell\open]
+
+[HKEY_CLASSES_ROOT\OrangeCatFile\shell\open\command]
+@=""

@@ -1,33 +1,7 @@
-# My Sample Document
+$ hola
 
-$ Introduction
+$ hola
 
-This is a sample document written in **odoc**. It includes various elements to test the conversion.
+$ hola Quiero seleccionar este con #3 (porque es el txt numero 3)
 
-$$ Features
-
-- Simple syntax
-- Easy to use
-- Converts to HTML
-
-* Nested Lists
-  * Subitem 1
-  * Subitem 2
-
-?$ Custom Header
-
-This section uses a custom header style.
-
-[GitHub](https://github.com) - Visit the GitHub website
-
-[Orange Cat]{https://www.orange-cat.com} - Visit the Orange Cat website
-
-!{styles.css} - Link to a stylesheet
-
-Here is some text with /italic/, *bold*, and _underlined_ formatting.
-
-\python
-# Example Python Code Block
-def hello_world():
-    print("Hello, World!")
-\
+$ hola

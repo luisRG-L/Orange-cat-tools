@@ -1,0 +1,20 @@
+
+# EditorConfig page: https://editorconfig.org
+
+root = true
+
+# Unix newlines with a newline
+
+#[*]
+#end_of_line = lf
+#insert_final_newline = true
+
+#[*.{js,py,java}]
+#charset = utf-8
+
+#[*.py]
+#indent_style = space
+#indent_size = 4
+
+#[*.java]
+#indent_style = tab
