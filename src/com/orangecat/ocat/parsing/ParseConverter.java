@@ -8,4 +8,16 @@ public class ParseConverter {
                 ParseUtilities.inList(Types.VARTYPES, token)
                 );
     }
+
+    public static boolean isPrint(String token) {
+        return (
+                token.equals("print")
+                );
+    }
+
+    public static boolean isBreakpoint(String token) {
+        return (
+                token.equals(";")
+                );
+    }
 }

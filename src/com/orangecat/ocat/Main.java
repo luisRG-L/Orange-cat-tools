@@ -15,6 +15,9 @@ public class Main {
         }
 
         String inputFilePath = args[0];
+        if(inputFilePath.lastIndexOf('.') == -1) {
+            System.err.println("The input file extension must be '.ocat' or '.oc'");
+        }
         String extension = inputFilePath.substring(inputFilePath.lastIndexOf('.')).replace(".", "");
         if (!(extension.equals("ocat") || extension.equals("oc"))){
             System.err.println("The input file extension must be '.ocat' or '.oc'");
@@ -25,7 +28,7 @@ public class Main {
 
             new Lexer(spacedContent);
         } catch (IOException e) {
-			System.err.println("Error al leer el archivo: " + inputFilePath);
+			System.err.println("Error reading file: " + inputFilePath);
         }
     }
 }

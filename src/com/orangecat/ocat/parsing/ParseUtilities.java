@@ -12,4 +12,15 @@ public class ParseUtilities {
         }
         return isInList;
     }
+
+    public static boolean containsInList(String [] list, String element) {
+        boolean isContaining = false;
+        for (String listElement : list) {
+            if (listElement.equals(element)) {
+                isContaining = true;
+                break;
+            }
+        }
+        return isContaining;
+    }
 }
