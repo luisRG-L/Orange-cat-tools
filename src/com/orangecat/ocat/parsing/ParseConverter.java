@@ -20,4 +20,16 @@ public class ParseConverter {
                 token.equals(";")
                 );
     }
+
+    public static boolean isFunctionDeclaration(String token) {
+        return (
+                token.equals("func")
+                );
+    }
+
+    public static boolean isFunctionCall(String token) {
+        return (
+                token.equals("call")
+                );
+    }
 }

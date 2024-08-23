@@ -30,5 +30,6 @@ public class Main {
         } catch (IOException e) {
 			System.err.println("Error reading file: " + inputFilePath);
         }
+        System.exit(0);
     }
 }

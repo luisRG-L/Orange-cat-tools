@@ -1,2 +1,5 @@
-int myvar = 6
-print ( myvar )
+func sal ( ) {
+print ( "Hola" )
+}
+
+call sal

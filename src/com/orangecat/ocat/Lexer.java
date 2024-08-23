@@ -8,7 +8,7 @@ public class Lexer {
 	private String token;
 	private int token_pos = 0;
 	private int breakpoint_index = 0;
-	private MemorySpace space = new MemorySpace();
+	private final MemorySpace space = new MemorySpace();
 
 	public Lexer(String[] keyWords) {
 		this.keywords = keyWords;
@@ -20,16 +20,22 @@ public class Lexer {
 		while(token_pos < keywords.length) {
 			if (ParseConverter.isVartype(token)) {
 				ParseFunctions.parseVariableDeclaration(this);
-			} else if (ParseConverter.isPrint(token)) {
-				ParseFunctions.parsePrintStatement(this);
-			}else if (ParseConverter.isBreakpoint(token)) {
-				breakpoint_index ++;
 			} else {
-				SyntaxError.undefined(token, getTokenIndex(), getBreakpointIndex());
-			}
+                assert token != null;
+                if (ParseConverter.isPrint(token)) {
+                    ParseFunctions.parsePrintStatement(this);
+                } else if (ParseConverter.isBreakpoint(token)) {
+                    breakpoint_index ++;
+                } else if (ParseConverter.isFunctionDeclaration(token)) {
+                    ParseFunctions.parseFunctionDeclaration(this);
+                } else if (ParseConverter.isFunctionCall(token)) {
+                    ParseFunctions.parseFunctionCall(this);
+                } else {
+					SyntaxError.undefined(token, getTokenIndex(), getBreakpointIndex());
+                }
+            }
 			nextToken();
 		}
-		System.exit(0);
 	}
 
 	public void nextToken() {

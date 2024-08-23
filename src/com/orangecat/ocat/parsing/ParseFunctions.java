@@ -3,7 +3,9 @@ package com.orangecat.ocat.parsing;
 import com.orangecat.ocat.Lexer;
 import com.orangecat.ocat.typing.*;
 import com.orangecat.ocat.errors.SyntaxError;
-import com.orangecat.ocat.typing.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParseFunctions {
     public static void parseVariableDeclaration(Lexer lexer) {
@@ -12,9 +14,11 @@ public class ParseFunctions {
         );
         lexer.nextToken();
         String variableName = lexer.getToken();
-        /*if (!(TypeVerifying.isVarName(variableName))) {
+        /*
+        if (!(TypeVerifying.isVarName(variableName))) {
             SyntaxError.badName(variableName, "variable", lexer.getTokenIndex(), lexer.getBreakpointIndex());
-        }*/
+        }
+        */
         lexer.nextToken();
         if (!lexer.getToken().equals("=")) {
             SyntaxError.excepted("=", lexer.getTokenIndex(), lexer.getBreakpointIndex());
@@ -48,4 +52,53 @@ public class ParseFunctions {
         }
         lexer.nextToken();
     }
+
+    public static void parseFunctionDeclaration(Lexer lexer) {
+        lexer.nextToken();
+        String functionName = lexer.getToken();
+        /*
+        if (!TypeVerifying.isVarName(lexer.getToken())) {
+
+        }
+        */
+        lexer.nextToken();
+        if (!lexer.getToken().equals("(")) {
+            SyntaxError.excepted("(", lexer.getTokenIndex(), lexer.getBreakpointIndex());
+        }
+        lexer.nextToken();
+        // TODO: Generate paramenter functions
+        if (!lexer.getToken().equals(")")) {
+            SyntaxError.excepted(")", lexer.getTokenIndex(), lexer.getBreakpointIndex());
+        }
+        lexer.nextToken();
+        if(!lexer.getToken().equals("{")) {
+            SyntaxError.excepted("{", lexer.getTokenIndex(), lexer.getBreakpointIndex());
+        }
+        lexer.nextToken();
+        List<String> tokens = new ArrayList<>();
+        while(!lexer.getToken().equals("}")) {
+            tokens.add(lexer.getToken());
+            lexer.nextToken();
+        }
+
+        lexer.getMemorySpace().addFunction(functionName, tokens);
+    }
+
+    public static void parseFunctionCall(Lexer lexer) {
+        lexer.nextToken();
+        String functionName = lexer.getToken();
+        lexer.nextToken();
+
+        List<String> functionTokens = lexer.getMemorySpace().functions.get(functionName);
+
+        if (functionTokens == null) {
+            SyntaxError.undefined(functionName, lexer.getTokenIndex(), lexer.getBreakpointIndex());
+            return;
+        }
+
+        String[] keywords = functionTokens.toArray(new String[0]);
+
+        new Lexer(keywords).parseCode();
+    }
+
 }
