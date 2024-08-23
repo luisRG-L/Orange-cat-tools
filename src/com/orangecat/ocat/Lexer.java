@@ -9,6 +9,8 @@ public class Lexer {
 	private int token_pos = 0;
 	private int breakpoint_index = 0;
 	private final MemorySpace space = new MemorySpace();
+	public boolean qualified = false;
+	public boolean lastConditionalValue = false;
 
 	public Lexer(String[] keyWords) {
 		this.keywords = keyWords;
@@ -22,7 +24,7 @@ public class Lexer {
 				ParseFunctions.parseVariableDeclaration(this);
 			} else {
                 assert token != null;
-                if (ParseConverter.isPrint(token)) {
+				if (ParseConverter.isPrint(token)) {
                     ParseFunctions.parsePrintStatement(this);
                 } else if (ParseConverter.isBreakpoint(token)) {
                     breakpoint_index ++;
@@ -30,7 +32,15 @@ public class Lexer {
                     ParseFunctions.parseFunctionDeclaration(this);
                 } else if (ParseConverter.isFunctionCall(token)) {
                     ParseFunctions.parseFunctionCall(this);
-                } else {
+                } else if (ParseConverter.isIf(token)) {
+					ParseFunctions.parseIfConditional(this);
+				} else if (ParseConverter.isElse(token)) {
+					ParseFunctions.parseElseConditional(this);
+				} else if (token.equals(";")) {
+					breakpoint_index ++;
+				} else if (token.equals("{")) {
+					qualified = false;
+				} else {
 					SyntaxError.undefined(token, getTokenIndex(), getBreakpointIndex());
                 }
             }

@@ -9,7 +9,7 @@ if "%~1"=="" (
 
 :: Verifica la versión
 if "%~1"=="-v" (
-    echo 0.0.2
+    echo 0.1.1
     exit /b 0
 ) else if "%~1"=="--version" (
     echo 0.0.2

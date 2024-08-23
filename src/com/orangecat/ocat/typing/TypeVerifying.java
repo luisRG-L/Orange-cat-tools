@@ -26,6 +26,7 @@ public class TypeVerifying {
     public static boolean isType(VariableType variableType, String value) {
         return switch (variableType) {
             case UNKNOWN -> true;
+            case BOOLEAN -> value.equals("true") || value.equals("false");
             case DECIMAL -> value.matches("^-?\\d*\\.\\d+$");
             case STRING -> value.startsWith("\"") && value.endsWith("\"");
             case INTEGER -> value.matches("^[+-]?\\d+$");

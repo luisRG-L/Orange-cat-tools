@@ -32,4 +32,16 @@ public class ParseConverter {
                 token.equals("call")
                 );
     }
+
+    public static boolean isIf(String token) {
+        return (
+                token.equals("if")
+                );
+    }
+
+    public static boolean isElse(String token) {
+        return (
+                token.equals("else")
+                );
+    }
 }

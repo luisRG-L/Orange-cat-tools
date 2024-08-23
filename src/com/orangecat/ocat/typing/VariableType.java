@@ -1,5 +1,5 @@
 package com.orangecat.ocat.typing;
 
 public enum VariableType {
-    UNKNOWN, DECIMAL, STRING, INTEGER
+    UNKNOWN, DECIMAL, STRING, BOOLEAN, INTEGER
 }
