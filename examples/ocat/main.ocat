@@ -1,5 +1,2 @@
-func sal ( ) {
-print ( "Hola" )
-}
-
-call sal
+bool var = true
+print ( var )
