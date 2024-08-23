@@ -1,2 +1,4 @@
-bool var = true
-print ( var )
+bool var = false ;
+if ( var ) {
+    print ( "Hola" )
+}
