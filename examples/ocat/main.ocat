@@ -1,6 +1,9 @@
 bool var = false ;
+bool var2 = false ;
 if ( var ) {
     print ( "Hello!" )
+} else if ( var2 ) {
+    print ( "Bye%Bye!" )
 } else {
-    print ( "Bye Bye!" )
+    print ( "Hello" )
 }
