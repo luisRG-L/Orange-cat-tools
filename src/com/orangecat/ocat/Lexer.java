@@ -25,8 +25,12 @@ public class Lexer {
 			} else {
                 assert token != null;
 				if (ParseConverter.isPrint(token)) {
-                    ParseFunctions.parsePrintStatement(this);
-                } else if (ParseConverter.isBreakpoint(token)) {
+					ParseFunctions.parsePrintStatement(this);
+				} else if (ParseConverter.isWarn(token)) {
+					ParseFunctions.parseWarnStatement(this);
+				} else if (ParseConverter.isError(token)) {
+					ParseFunctions.parsePrintStatement(this);
+				} else if (ParseConverter.isBreakpoint(token)) {
                     breakpoint_index ++;
                 } else if (ParseConverter.isFunctionDeclaration(token)) {
                     ParseFunctions.parseFunctionDeclaration(this);
@@ -36,7 +40,13 @@ public class Lexer {
 					ParseFunctions.parseIfConditional(this);
 				} else if (ParseConverter.isElse(token)) {
 					ParseFunctions.parseElseConditional(this);
+				} else if (ParseConverter.isImport(token)) {
+					ParseFunctions.parseImport(this);
+				} else if (ParseConverter.isTest(token)) {
+					ParseFunctions.parseTest(this);
 				} else if (token.equals(";")) {
+					breakpoint_index ++;
+				}  else if (token.equals("\\s+")) {
 					breakpoint_index ++;
 				} else if (token.equals("{")) {
 					qualified = false;

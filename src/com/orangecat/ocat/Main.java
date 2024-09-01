@@ -28,7 +28,7 @@ public class Main {
 
             new Lexer(spacedContent);
         } catch (IOException e) {
-			System.err.println("Error reading file: " + inputFilePath);
+            System.err.println("Error reading file: " + inputFilePath);
         }
         System.exit(0);
     }

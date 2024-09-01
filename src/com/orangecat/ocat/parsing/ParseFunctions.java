@@ -4,8 +4,12 @@ import com.orangecat.ocat.Lexer;
 import com.orangecat.ocat.typing.*;
 import com.orangecat.ocat.errors.SyntaxError;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import com.orangecat.ocat.compilation.Colors;
 
 public class ParseFunctions {
     public static void parseVariableDeclaration(Lexer lexer) {
@@ -41,12 +45,12 @@ public class ParseFunctions {
         String content = lexer.getToken();
         if (content.startsWith("\"") && content.endsWith("\"")) {
             // It's a string literal
-            System.out.println(content.substring(1, content.length() - 1).replace("%", " ")); // Remove the quotes
+            System.out.println(content.replace("\"", "").replace("%", " ")); // Remove the quotes
         } else {
             // It's a variable
             String variableValue = lexer.getMemorySpace().variables.get(content);
             if (variableValue != null) {
-                System.out.println(variableValue.replace("%", " "));
+                System.out.println(variableValue.replace("%", " ").replace("\"", ""));
             } else {
                 SyntaxError.undefined(content, lexer.getTokenIndex(), lexer.getBreakpointIndex());
             }
@@ -159,5 +163,59 @@ public class ParseFunctions {
             lexer.nextToken();
         }
         lexer.qualified = true;
+    }
+
+    public static void parseImport(Lexer lexer) {/*
+        lexer.nextToken();
+        String libname = lexer.getToken();
+        String inputFilePath = libname + ".ocat";
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(inputFilePath)));
+            String[] spacedContent = content.split("\\s+");
+
+            Lexer lexer1 = new Lexer(spacedContent);
+            lexer1.getMemorySpace().variables.forEach(lexer.getMemorySpace()::addVariable);
+        } catch (IOException e) {
+            System.err.println("HOLa");
+        }
+*/
+    }
+
+    public static void parseTest(Lexer lexer) {
+        lexer.nextToken();
+        String varName = lexer.getToken();
+        String varValue = lexer.getMemorySpace().variables.get(varName);
+        System.out.println("Variable name: "+varName);
+        System.out.println("Variable value: "+varValue);
+        System.out.println("Variable type: "+Types.typeof(varValue));
+        lexer.nextToken();
+    }
+
+    public static void parseWarnStatement(Lexer lexer) {
+        lexer.nextToken(); // Skip 'warn'
+        if (!lexer.getToken().equals("(")) {
+            SyntaxError.excepted("(", lexer.getTokenIndex(), lexer.getBreakpointIndex());
+        }
+        lexer.nextToken(); // Skip '('
+
+        String content = lexer.getToken();
+        if (content.startsWith("\"") && content.endsWith("\"")) {
+            // It's a string literal
+            new Colors(System.out).println("Warn:"+content.replace("\"", "").replace("%", " "), Colors.YELLOW_BG, Colors.WHITE); // Remove the quotes
+        } else {
+            // It's a variable
+            String variableValue = lexer.getMemorySpace().variables.get(content);
+            if (variableValue != null) {
+                new Colors(System.out).println(variableValue.replace("%", " ").replace("\"", ""), Colors.YELLOW_BG, Colors.WHITE);
+            } else {
+                SyntaxError.undefined(content, lexer.getTokenIndex(), lexer.getBreakpointIndex());
+            }
+        }
+
+        lexer.nextToken(); // Skip token after print content
+        if (!lexer.getToken().equals(")")) {
+            SyntaxError.excepted(")", lexer.getTokenIndex(), lexer.getBreakpointIndex());
+        }
+        lexer.nextToken();
     }
 }

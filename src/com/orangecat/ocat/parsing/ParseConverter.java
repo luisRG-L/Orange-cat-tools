@@ -44,4 +44,28 @@ public class ParseConverter {
                 token.equals("else")
                 );
     }
+
+    public static boolean isImport(String token) {
+        return (
+                token.equals("import")
+                );
+    }
+
+    public static boolean isTest(String token) {
+        return (
+                token.equals("test")
+                );
+    }
+
+    public static boolean isWarn(String token) {
+        return (
+                token.equals("warn")
+                );
+    }
+
+    public static boolean isError(String token) {
+        return (
+                token.equals("err")
+                );
+    }
 }
