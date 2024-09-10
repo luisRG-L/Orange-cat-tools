@@ -24,5 +24,6 @@ replay_pid*
 __MACOSX__
 .DS_STORE
 
-# Other files
-pr.md
+# Vscode configurations
+.markdownlint.json
+.vscode/settings.json

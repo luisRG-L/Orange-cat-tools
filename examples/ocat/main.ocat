@@ -1,8 +1,3 @@
-bool true = true ;
-if ( true ) {
-    print ( "HOLA" )
-}
-print ( "ELSE" )
-else {
-    print ( "ADIOS" )
-}
+front add `paragraph>"Hola,%esta%es%mi%primera%página%web%en%orangeCat`
+front add `group>paragraph>"esto%es%un%grupo`
+front build ;

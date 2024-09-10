@@ -68,4 +68,16 @@ public class ParseConverter {
                 token.equals("err")
                 );
     }
+
+    public static boolean isFront(String token) {
+        return (
+                token.equals("front")
+        );
+    }
+
+    public static boolean isRepeat(String token) {
+        return (
+                token.equals("repeat")
+                );
+    }
 }

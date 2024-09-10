@@ -4,13 +4,45 @@ import com.orangecat.ocat.errors.SyntaxError;
 import com.orangecat.ocat.parsing.*;
 
 public class Lexer {
+
 	private final String[] keywords;
+
+	public MemorySpace getSpace() {
+		return space;
+	}
+
+	public int getBreakpoint_index() {
+		return breakpoint_index;
+	}
+
+	public void setBreakpoint_index(int breakpoint_index) {
+		this.breakpoint_index = breakpoint_index;
+	}
+
+	public int getTokenPos() {
+		return tokenPos;
+	}
+
+	public void setTokenPos(int tokenPos) {
+		this.tokenPos = tokenPos;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String[] getKeywords() {
+		return keywords;
+	}
+
 	private String token;
-	private int token_pos = 0;
+	private int tokenPos = 0;
 	private int breakpoint_index = 0;
 	private final MemorySpace space = new MemorySpace();
+
 	public boolean qualified = false;
 	public boolean lastConditionalValue = false;
+	public StringBuilder html = new StringBuilder();
 
 	public Lexer(String[] keyWords) {
 		this.keywords = keyWords;
@@ -18,18 +50,21 @@ public class Lexer {
     }
 
 	public void parseCode() {
-		token = keywords[token_pos];
-		while(token_pos < keywords.length) {
+		token = keywords[tokenPos];
+		while(tokenPos < keywords.length) {
 			if (ParseConverter.isVartype(token)) {
 				ParseFunctions.parseVariableDeclaration(this);
 			} else {
                 assert token != null;
+				// CONTROL
 				if (ParseConverter.isPrint(token)) {
 					ParseFunctions.parsePrintStatement(this);
 				} else if (ParseConverter.isWarn(token)) {
 					ParseFunctions.parseWarnStatement(this);
 				} else if (ParseConverter.isError(token)) {
 					ParseFunctions.parsePrintStatement(this);
+				} else if (ParseConverter.isFront(token)) {
+					ParseFunctions.parseFront(this);
 				} else if (ParseConverter.isBreakpoint(token)) {
                     breakpoint_index ++;
                 } else if (ParseConverter.isFunctionDeclaration(token)) {
@@ -40,6 +75,8 @@ public class Lexer {
 					ParseFunctions.parseIfConditional(this);
 				} else if (ParseConverter.isElse(token)) {
 					ParseFunctions.parseElseConditional(this);
+				} else if(ParseConverter.isRepeat(token)) {
+					ParseFunctions.parseRepeat(this);
 				} else if (ParseConverter.isImport(token)) {
 					ParseFunctions.parseImport(this);
 				} else if (ParseConverter.isTest(token)) {
@@ -59,10 +96,10 @@ public class Lexer {
 	}
 
 	public void nextToken() {
-		if (++ token_pos >= keywords.length) { ///< Verify EOD
+		if (++tokenPos >= keywords.length) { ///< Verify EOD
 			System.exit(0);
 		}
-		token = keywords[token_pos];
+		token = keywords[tokenPos];
 	}
 
 	public String getToken() {
@@ -70,7 +107,7 @@ public class Lexer {
 	}
 
 	public int getTokenIndex() {
-		return token_pos;
+		return tokenPos;
 	}
 
 	public int getBreakpointIndex() {
