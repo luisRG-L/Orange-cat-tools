@@ -1,3 +1,10 @@
-front add `paragraph>"Hola,%esta%es%mi%primera%página%web%en%orangeCat`
-front add `group>paragraph>"esto%es%un%grupo`
-front build ;
+/* */
+front add `paragraph>"Hola`
+front out default
+front build
+
+func sayHello ( ) {
+    print ( "Hello, Orange Cat User" )
+}
+
+call sayHello ( )

@@ -87,6 +87,10 @@ public class Lexer {
 					breakpoint_index ++;
 				} else if (token.equals("{")) {
 					qualified = false;
+				} else if (token.equals("/*")) {
+					while (!token.equals("*/")) {
+						nextToken();
+					}
 				} else {
 					SyntaxError.undefined(token, getTokenIndex(), getBreakpointIndex());
                 }

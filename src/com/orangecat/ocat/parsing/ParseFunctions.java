@@ -5,7 +5,6 @@ import com.orangecat.ocat.http.HTTPUtilities;
 import com.orangecat.ocat.typing.*;
 import com.orangecat.ocat.errors.SyntaxError;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -20,8 +19,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import javax.swing.*;
-
 public class ParseFunctions {
 
     public static void parsePrintStatement(Lexer lexer) {
@@ -32,11 +29,15 @@ public class ParseFunctions {
         lexer.nextToken(); // Skip '('
 
         String content = lexer.getToken();
-        if (content.startsWith("\"") && content.endsWith("\"")) {
-            // It's a string literal
-            System.out.println(content.replace("\"", "").replace("%", " ")); // Remove the quotes
+        if (content.startsWith("\"")) {
+            StringBuilder sb = new StringBuilder();
+            while(!lexer.getToken().endsWith("\"")) {
+                sb.append(lexer.getToken().replace("\"", "")).append(" ");
+                lexer.nextToken();
+            }
+            sb.append(lexer.getToken().replace("\"", "")).append(" ");
+            System.out.println(sb.toString().replace("\"", "").replace("%", " ")); // Remove the quotes
         } else {
-            // It's a variable
             String variableValue = lexer.getMemorySpace().variables.get(content);
             if (variableValue != null) {
                 System.out.println(variableValue.replace("%", " ").replace("\"", ""));
@@ -49,7 +50,6 @@ public class ParseFunctions {
         if (!lexer.getToken().equals(")")) {
             SyntaxError.excepted(")", lexer.getTokenIndex(), lexer.getBreakpointIndex());
         }
-        lexer.nextToken(); // Skip ')'
     }
 
     public static void parseWarnStatement(Lexer lexer) {
@@ -240,7 +240,6 @@ public class ParseFunctions {
     }
 
     public static void parseImport(Lexer lexer) {
-        /*
         lexer.nextToken();
         String libname = lexer.getToken();
         String inputFilePath = libname + ".ocat";
@@ -252,7 +251,7 @@ public class ParseFunctions {
             lexer1.getMemorySpace().variables.forEach(lexer.getMemorySpace()::addVariable);
         } catch (IOException e) {
             System.err.println("HOLa");
-        }*/
+        }
     }
 
     public static void parseTest(Lexer lexer) {
@@ -310,19 +309,39 @@ public class ParseFunctions {
                     System.out.println("Server stopped");
 
                 } catch (IOException e) {
-                    // TODO: END
+                    System.err.println("This port is already running.");
                 }
             }
             case "add" -> {
                 lexer.nextToken();
-                String tag = lexer.getToken();
+                StringBuilder sb = new StringBuilder();
+                while(!lexer.getToken().endsWith("`")) {
+                    sb.append(lexer.getToken()).append(" ");
+                    lexer.nextToken();
+                }
+                sb.append(lexer.getToken()).append(" ");
+
+                String tag = sb.toString();
                 if(!tag.startsWith("`")) {
                     SyntaxError.noType("The front add pattern must be an a superstring", lexer.getTokenIndex(), lexer.getBreakpointIndex());
                 }
                 lexer.html.append(HTTPUtilities.parseHTTPTag(tag.replace("`", "")));
             }
-            case "" -> {
+            case "out" -> {
+                lexer.nextToken();
+                String fileName = lexer.getToken();
+                fileName = fileName.replace("\"", "").replace("`", "");
 
+                if(fileName.equals("default")) {
+                    fileName = "index";
+                }
+
+                String outputHTMLPath = lexer.getToken() + ".o.html";
+                try {
+                    Files.write(Paths.get(outputHTMLPath), lexer.html.toString().getBytes());
+                } catch (IOException e) {
+                    System.err.println("The file already exists");
+                }
             }
         }
     }
