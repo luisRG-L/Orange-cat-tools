@@ -1,10 +1,10 @@
-/* */
-front add `paragraph>"Hola`
-front out default
-front build
+save input ( "Hola" ) as str
+switch ( str ) {
+    case "Hola" : 
+        print ( "Hola" )
+    break ;
 
-func sayHello ( ) {
-    print ( "Hello, Orange Cat User" )
+    case "Helo" :
+        print ( "Helo" )
+    break ;
 }
-
-call sayHello ( )

@@ -6,33 +6,8 @@ import com.orangecat.ocat.parsing.*;
 public class Lexer {
 
 	private final String[] keywords;
-
-	public MemorySpace getSpace() {
-		return space;
-	}
-
-	public int getBreakpoint_index() {
-		return breakpoint_index;
-	}
-
-	public void setBreakpoint_index(int breakpoint_index) {
-		this.breakpoint_index = breakpoint_index;
-	}
-
 	public int getTokenPos() {
 		return tokenPos;
-	}
-
-	public void setTokenPos(int tokenPos) {
-		this.tokenPos = tokenPos;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public String[] getKeywords() {
-		return keywords;
 	}
 
 	private String token;
@@ -81,6 +56,12 @@ public class Lexer {
 					ParseFunctions.parseImport(this);
 				} else if (ParseConverter.isTest(token)) {
 					ParseFunctions.parseTest(this);
+				} else if (ParseConverter.isSave(token)) {
+					ParseFunctions.parseSave(this);
+				}else if (ParseConverter.isBack(token)) {
+					ParseFunctions.parseBack(this);
+				}else if (ParseConverter.isSwitch(token)) {
+					ParseFunctions.parseSwitch(this);
 				} else if (token.equals(";")) {
 					breakpoint_index ++;
 				}  else if (token.equals("\\s+")) {
@@ -100,10 +81,9 @@ public class Lexer {
 	}
 
 	public void nextToken() {
-		if (++tokenPos >= keywords.length) { ///< Verify EOD
-			System.exit(0);
+		if (++tokenPos < keywords.length) { ///< Verify EOD
+			token = keywords[tokenPos];
 		}
-		token = keywords[tokenPos];
 	}
 
 	public String getToken() {

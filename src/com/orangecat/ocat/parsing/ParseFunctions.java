@@ -147,8 +147,7 @@ public class ParseFunctions {
         }
 
         // Create a new Lexer with the tokens of the called function
-        Lexer functionLexer = new Lexer(functionTokens.toArray(new String[0]));
-        functionLexer.parseCode(); // Parse the function's code
+        new Lexer(functionTokens.toArray(new String[0]));
     }
 
 
@@ -235,7 +234,6 @@ public class ParseFunctions {
             SyntaxError.excepted("{", lexer.getTokenIndex(), lexer.getBreakpointIndex());
         }
         lexer.nextToken();
-        int tknpos = lexer.getTokenPos();
 
     }
 
@@ -327,6 +325,18 @@ public class ParseFunctions {
                 }
                 lexer.html.append(HTTPUtilities.parseHTTPTag(tag.replace("`", "")));
             }
+            case "page" -> {
+                lexer.nextToken();
+                StringBuilder sb = new StringBuilder();
+                while(!lexer.getToken().endsWith("`")) {
+                    sb.append(lexer.getToken()).append(" ");
+                    lexer.nextToken();
+                }
+                sb.append(lexer.getToken()).append(" ") ;
+
+                String tags = sb.toString();
+                
+            }
             case "out" -> {
                 lexer.nextToken();
                 String fileName = lexer.getToken();
@@ -345,4 +355,44 @@ public class ParseFunctions {
             }
         }
     }
+
+    public static void parseSave(Lexer lexer) {
+        lexer.nextToken();
+        String function = lexer.getToken();
+        String val;
+        switch (function) {
+            case "input" -> {
+                parsePrintStatement(lexer);
+                Scanner sc = new Scanner(System.in);
+                val = sc.next();
+            }
+            default -> val = "";
+        }
+        lexer.nextToken();
+        if(!lexer.getToken().equals("as")) {
+            SyntaxError.excepted("as", lexer.getTokenIndex(), lexer.getBreakpointIndex());
+        }
+        lexer.nextToken();
+        String name = lexer.getToken();
+        lexer.getMemorySpace().variables.put(name, val);
+    }
+
+    public static void parseBack(Lexer lexer) {
+        lexer.nextToken();
+    }
+
+    public static void parseSwitch(Lexer lexer) {
+        lexer.nextToken();
+        // TODO: Do logic for the switch
+        // code:
+        /*
+            string var = "Hola Mundo"
+            switch ( var ) {
+                case var {
+                    print ( "Hello" )
+                }
+            }
+         */
+    }
+
 }

@@ -45,6 +45,12 @@ public class ParseConverter {
                 );
     }
 
+    public static boolean isSwitch(String token) {
+        return (
+                token.equals("switch")
+        );
+    }
+
     public static boolean isImport(String token) {
         return (
                 token.equals("import")
@@ -79,5 +85,17 @@ public class ParseConverter {
         return (
                 token.equals("repeat")
                 );
+    }
+
+    public static boolean isSave(String token) {
+        return (
+                token.equals("save")
+        );
+    }
+
+    public static boolean isBack(String token) {
+        return (
+                token.equals("back")
+        );
     }
 }
